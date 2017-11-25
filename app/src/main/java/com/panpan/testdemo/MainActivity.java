@@ -11,25 +11,46 @@ import com.panpan.testdemo.bean.LoginResponse;
 import java.util.HashMap;
 import java.util.Map;
 
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
     private Retrofit mRetrofit;
+    private OkHttpClient mOkHttpClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        HttpLoggingInterceptor logInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
+            @Override
+            public void log(String message) {
+//                Timber.tag("OkHttp").d(message);
+//                Logger.e("okhttp",message);
+                Log.e("okhttp", message);
+            }
+        });
+        logInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+        mOkHttpClient = new OkHttpClient.Builder()
+                .addInterceptor(logInterceptor).build();
+
+
         mRetrofit = new Retrofit.Builder()
                 .baseUrl("http://api.wnaaa.cn:8801/")
                 .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .client(mOkHttpClient)
                 .build();
+
     }
 
     public void login(View view) {
@@ -52,7 +73,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void login2(View view) {
 
-
         ApiService login = mRetrofit.create(ApiService.class);
 
         Map<String, String> param = new HashMap<>();
@@ -64,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
         call.enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
-                Log.e("response", response.toString());
+                Log.e("response", response.body().toString());
             }
 
             @Override
@@ -80,7 +100,25 @@ public class MainActivity extends AppCompatActivity {
         homeData.enqueue(new Callback<HomeBean>() {
             @Override
             public void onResponse(Call<HomeBean> call, Response<HomeBean> response) {
-                Log.e("response", response.toString());
+                HomeBean bean = response.body();
+                Log.e("response", bean.toString());
+            }
+
+            @Override
+            public void onFailure(Call<HomeBean> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void home1(View view) {
+        ApiService login = mRetrofit.create(ApiService.class);
+        Call<HomeBean> homeData = login.getHomeData("index");
+        homeData.enqueue(new Callback<HomeBean>() {
+            @Override
+            public void onResponse(Call<HomeBean> call, Response<HomeBean> response) {
+                HomeBean bean = response.body();
+                Log.e("response", bean.toString());
             }
 
             @Override

@@ -26,12 +26,30 @@ public class HomeBean {
             public String name;
             public String url;
             public String img;
+
+            @Override
+            public String toString() {
+                return "BannerBean{" +
+                        "name='" + name + '\'' +
+                        ", url='" + url + '\'' +
+                        ", img='" + img + '\'' +
+                        '}';
+            }
         }
 
         public static class CategoryBean {
             public String id;
             public String name;
             public String appimg;
+
+            @Override
+            public String toString() {
+                return "CategoryBean{" +
+                        "id='" + id + '\'' +
+                        ", name='" + name + '\'' +
+                        ", appimg='" + appimg + '\'' +
+                        '}';
+            }
         }
 
         public static class GoodshotBean {
@@ -42,6 +60,19 @@ public class HomeBean {
             public String market_price;
             public String sale_jia;
             public String discount;
+
+            @Override
+            public String toString() {
+                return "GoodshotBean{" +
+                        "id='" + id + '\'' +
+                        ", name='" + name + '\'' +
+                        ", img='" + img + '\'' +
+                        ", sell_price='" + sell_price + '\'' +
+                        ", market_price='" + market_price + '\'' +
+                        ", sale_jia='" + sale_jia + '\'' +
+                        ", discount='" + discount + '\'' +
+                        '}';
+            }
         }
 
         public static class ActionBean {
