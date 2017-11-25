@@ -12,6 +12,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
+import rx.Observable;
 
 /**
  * Created by Administrator on 2017/11/24.
@@ -38,4 +39,9 @@ public interface ApiService {
     //2.get请求有参
     @GET("index.php?controller=wzapi")
     Call<HomeBean> getHomeData(@Query("action") String action);
+
+    //3.get请求有参，使用rxjava
+    @GET("index.php?controller=wzapi")
+    Observable<HomeBean> getHomeData2(@Query("action") String action);
+
 }

@@ -31,4 +31,10 @@
         android:layout_height="wrap_content"
         android:onClick="home1"
         android:text="GET获取首页有参"/>
+
+    <TextView
+        android:id="@+id/result_txt"
+        android:layout_width="match_parent"
+        android:text="结果"
+        android:layout_height="wrap_content"/>
 </LinearLayout>
